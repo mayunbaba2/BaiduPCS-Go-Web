@@ -6,7 +6,7 @@
 ![image](docs/Capture.JPG)
 
 ### 前言
-本人自用的UI， 只提供简单的链接
+本人自用的UI，只提供简单的链接。可以放在远程服务器里面快速实现离线下载。
 
 
 ### Docker
@@ -22,7 +22,7 @@ npm start
 ```
 
 ### 配置
-#### 配置你的登录密码
+配置你的登录密码
 
 修改index.js里面的
 `const PASSWORD = 'YourPassword';`
