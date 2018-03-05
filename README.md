@@ -15,18 +15,13 @@ docker build -t baidupcsui .
 docker run -d -p 80:3000 -v /downloads:/download baidupcsui
 ```
 
-### NPM
-```
-npm i
-npm start
-```
-
 ### 配置
 配置你的登录密码
 
+```
 修改index.js里面的
-`const PASSWORD = 'YourPassword';`
-
+const PASSWORD = 'YourPassword';
+```
 
 ### 登录
 `login -bduss=YOURBUDSS`
