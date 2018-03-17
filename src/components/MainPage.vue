@@ -19,6 +19,7 @@
     <div class="actions">
       <input type="text" v-model="cmd">
       <button @click="run">Run</button>
+      <input type="password" v-model="psw">
     </div>
     <loading v-if="isLoading"></loading>
   </div>
@@ -36,6 +37,7 @@ export default {
   data() {
     return {
       msg: "",
+      psw: "",
       files: [],
       cmd: "",
       isLoading: true
@@ -78,12 +80,12 @@ export default {
         this.isLoading = true;
       }
       connect
-        .run(cmd)
+        .run(cmd, this.psw)
         .then(data => {
           if (data.data.method === "ls") {
             this.showFiles(data.data.data);
           }
-          if (data.data.method === "cd") {
+          if (data.data.method === "cd" || data.data.method === "login") {
             this.fetch("ls");
           } else {
             this.isLoading = false;
