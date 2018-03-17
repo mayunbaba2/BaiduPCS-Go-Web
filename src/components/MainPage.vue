@@ -12,15 +12,20 @@
       <input type="text" v-model="cmd">
       <button @click="run">Run</button>
     </div>
+    <loading></loading>
   </div>
 </template>
 
 <script>
 
 import connect from '@/apis/connect'
+import loading from '@/widges/loading'
 
 export default {
   name: 'MainPage',
+  components: {
+    loading,
+  },
   data () {
     return {
       msg: '',
