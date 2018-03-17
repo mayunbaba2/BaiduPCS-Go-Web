@@ -28,7 +28,11 @@ const PASSWORD = 'YourPassword';
 
 ### 登录
 
+非常重要在输入框里面输入一下内容，点击 run
 `login -bduss=YOURBUDSS`
+
+`ls`
+得到目录内所有文件
 
 ### 核心代码更新
 
