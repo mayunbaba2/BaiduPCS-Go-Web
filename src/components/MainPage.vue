@@ -1,10 +1,16 @@
 <template>
   <div>
     <div class="fileContainer">
-      <button @click="back">Back</button>
+      <el-button type="primary" size="mini" @click="back">Back</el-button>
       <div class="files" v-bind:key="file.fileName" v-for="file in files">
-        <span v-if="file.isFile" @click="download(file.fileName)" class="file">{{file.fileName}}</span>
-        <span v-if="!file.isFile" @click="cd(file.fileName)" class="dir">{{file.fileName}}</span>
+        <div v-if="file.isFile" @click="download(file.fileName)" class="file">
+          <span class=" fa fa-file icon"></span>
+          <span >{{file.fileName}}</span>
+        </div>
+        <div v-if="!file.isFile" @click="cd(file.fileName)" class="dir">
+          <span class=" fa fa-folder-open icon"></span>
+          <span>{{file.fileName}}</span>
+        </div>
       </div>
     </div>
 
@@ -17,108 +23,112 @@
 </template>
 
 <script>
-
-import connect from '@/apis/connect'
-import loading from '@/widges/loading'
+import connect from "@/apis/connect";
+import loading from "@/widges/loading";
 
 export default {
-  name: 'MainPage',
+  name: "MainPage",
   components: {
-    loading,
+    loading
   },
-  data () {
+  data() {
     return {
-      msg: '',
+      msg: "",
       files: [],
-      cmd: '',
-      isLoading: true,
-    }
+      cmd: "",
+      isLoading: true
+    };
   },
-  created(){
-    this.fetch('ls');
+  created() {
+    this.fetch("ls");
   },
   methods: {
-      showFiles(data){
-        let temp = data.split('\n');
-        temp.shift();
-        temp.shift();
-        temp.shift();
-        temp.shift();
-        temp.pop();
-        temp.pop();
-        temp.pop();
-        this.files = temp.map(e=>{
-          const fileName = e.slice(45).trim();
-          const isFile = !fileName.endsWith('/');
+    showFiles(data) {
+      let temp = data.split("\n");
+      temp.shift();
+      temp.shift();
+      temp.shift();
+      temp.shift();
+      temp.pop();
+      temp.pop();
+      temp.pop();
+      this.files = temp.map(e => {
+        const fileName = e.slice(45).trim();
+        const isFile = !fileName.endsWith("/");
 
-          return {
-            isFile,
-            fileName
+        return {
+          isFile,
+          fileName
+        };
+      });
+    },
+
+    run() {
+      if (this.cmd === "") {
+        this.cmd = "ls";
+      }
+      this.fetch(this.cmd);
+    },
+
+    fetch(cmd) {
+      if (cmd.split(" ")[0] !== "download") {
+        this.isLoading = true;
+      }
+      connect
+        .run(cmd)
+        .then(data => {
+          if (data.data.method === "ls") {
+            this.showFiles(data.data.data);
           }
-        });
-      },
-
-      run(){
-        if(this.cmd===''){
-          this.cmd = 'ls';
-        }
-        this.fetch(this.cmd)
-      },
-
-      fetch(cmd){
-        if(cmd.split(' ')[0] !== 'download' ){
-          this.isLoading = true;
-        }
-        connect.run(cmd)
-          .then(data=>{
-            if(data.data.method === 'ls'){
-              this.showFiles(data.data.data)
-            }
-            if(data.data.method === 'cd'){
-              this.fetch('ls');
-            } else {
-              this.isLoading = false;
-            }
-            if(data.data.method === 'download'){
-              this.$message({
-                message: '文件下载成功' + name,
-                type: 'success'
-              });
-            }
-            this.msg += data.data.data;
-          })
-          .catch(()=>{
+          if (data.data.method === "cd") {
+            this.fetch("ls");
+          } else {
             this.isLoading = false;
-          })
-      },
-
-      download(name){
-        this.fetch('download ' + name);
-        this.$message({
-          message: '正在下载文件' + name,
-          type: 'success'
+          }
+          if (data.data.method === "download") {
+            this.$message({
+              message: "文件下载成功" + name,
+              type: "success"
+            });
+          }
+          this.msg += data.data.data;
+        })
+        .catch(() => {
+          this.isLoading = false;
         });
-      },
+    },
 
+    download(name) {
+      this.fetch("download " + name);
+      this.$message({
+        message: "正在下载文件" + name,
+        type: "success"
+      });
+    },
 
-      cd(name) {
-        this.fetch('cd ' + name);
-      },
+    cd(name) {
+      this.fetch("cd " + name);
+    },
 
-      back(){
-        this.fetch('cd ..');
-      },
+    back() {
+      this.fetch("cd ..");
+    }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.fileContainer{
+.fileContainer {
   width: 100%;
-  border: 1px solid red;
+  border: 1px solid rgb(99, 99, 99);
   overflow: hidden;
   text-align: left;
+  padding: 1em;
+
+  .files {
+    margin: 0 10px;
+  }
 
   span {
     display: inline-block;
@@ -126,18 +136,14 @@ export default {
     margin: 4px;
     white-space: nowrap;
     cursor: pointer;
+  }
 
-    &.file{
+  .file {
+    color: rgb(27, 27, 41);
+  }
 
-    }
+  .dir {
+    color: rgb(83, 82, 0);
   }
 }
-
-.logs{
-  width: 40%;
-  display: inline-block;
-  border: 1px solid red;
-}
-
-
 </style>

@@ -1,17 +1,16 @@
-import fetch from '@/utils/fetch';
+import fetch from "@/utils/fetch";
 
-const API_URL = 'http://localhost:3000/';
+const API_URL = "http://localhost:3000/";
 
 export default {
   run(cmd) {
     return fetch({
       url: API_URL,
-      method: 'post',
+      method: "post",
       data: {
         cmd,
         psw: "YourPassword"
       }
     });
-  },
-
+  }
 };

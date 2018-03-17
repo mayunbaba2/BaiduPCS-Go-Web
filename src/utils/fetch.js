@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 // 创建axios实例
 const service = axios.create({
@@ -18,14 +18,14 @@ const service = axios.create({
 // respone拦截器
 service.interceptors.response.use(
   response => response,
-  (error) => {
+  error => {
     if (error.response) {
-      console.error(error.response)
+      console.error(error.response);
     } else {
-      console.error('Unknown error')
+      console.error("Unknown error");
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default service;
