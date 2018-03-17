@@ -13,7 +13,9 @@
         </div>
       </div>
     </div>
-
+  <!-- <pre>
+    {{msg}}
+  </pre> -->
     <div class="actions">
       <input type="text" v-model="cmd">
       <button @click="run">Run</button>
@@ -53,7 +55,8 @@ export default {
       temp.pop();
       temp.pop();
       this.files = temp.map(e => {
-        const fileName = e.slice(45).trim();
+        const re = /\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d/;
+        const fileName = e.split(re)[1].trim();
         const isFile = !fileName.endsWith("/");
 
         return {
