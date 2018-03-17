@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   const body = req.body;
-  const prefix = './BaiduPCS-Go ';
+  const prefix = path.join('/BaiduPCS-Go ');
   const cmd = prefix + body.cmd;
   const psw = body.psw;
 
