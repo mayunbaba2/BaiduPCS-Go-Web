@@ -1,5 +1,6 @@
 <template>
-  <div></div>
+  <div v-loading="true">
+  </div>
 </template>
 
 <script>

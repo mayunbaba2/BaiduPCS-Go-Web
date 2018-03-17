@@ -12,7 +12,7 @@
       <input type="text" v-model="cmd">
       <button @click="run">Run</button>
     </div>
-    <loading></loading>
+    <loading v-if="isLoading"></loading>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       msg: '',
       files: [],
       cmd: '',
-      isLoading: false,
+      isLoading: true,
     }
   },
   created(){
@@ -47,7 +47,6 @@ export default {
         temp.pop();
         temp.pop();
         temp.pop();
-        console.log(temp)
         this.files = temp.map(e=>{
           const fileName = e.slice(45).trim();
           const isFile = !fileName.endsWith('/');
@@ -67,6 +66,9 @@ export default {
       },
 
       fetch(cmd){
+        if(cmd.split(' ')[0] !== 'download' ){
+          this.isLoading = true;
+        }
         connect.run(cmd)
           .then(data=>{
             if(data.data.method === 'ls'){
@@ -74,13 +76,28 @@ export default {
             }
             if(data.data.method === 'cd'){
               this.fetch('ls');
+            } else {
+              this.isLoading = false;
+            }
+            if(data.data.method === 'download'){
+              this.$message({
+                message: '文件下载成功' + name,
+                type: 'success'
+              });
             }
             this.msg += data.data.data;
+          })
+          .catch(()=>{
+            this.isLoading = false;
           })
       },
 
       download(name){
         this.fetch('download ' + name);
+        this.$message({
+          message: '正在下载文件' + name,
+          type: 'success'
+        });
       },
 
 
