@@ -26,6 +26,14 @@ npm install
 npm run build
 npm start
 ```
+### Docker		
+		
+```		
+docker build -t baidupcsui .		
+docker run -d -p 80:3000 -v /downloads:/usr/src/app/download/ baidupcsui		
+```		
+
+
 ### 登录 非常重要
 
 在输入框里面输入以下内容，点击 run
