@@ -104,7 +104,7 @@ export default {
     },
 
     download(name) {
-      this.fetch("download " + name);
+      this.fetch("download '" + name + "'");
       this.$message({
         message: "正在下载文件" + name,
         type: "success"
